@@ -122,7 +122,7 @@ import config from './config'
       console.log('買い注文完了', tradeStatus)
     }
 
-    // 現在価格が、単純移動平均線(期間n分)より下にある場合→買う
+    // 現在価格が、単純移動平均線(期間n分)より下にある場合→売る
     if(currentAverage > currentPrice)
     {
       if(env === 'production') {
