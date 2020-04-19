@@ -13,6 +13,9 @@ import config from './config'
     設定値
   */
 
+  type Env = 'development' | 'production'
+  const env: Env = 'development'
+
   const symbol = 'FX_BTC_JPY'
 
   // トレードボリューム(単位BTC)
@@ -108,9 +111,11 @@ import config from './config'
     // 現在価格が、単純移動平均線(SMA)より上にある場合→買う
     if(currentAverage < currentPrice)
     {
-      // let result = await exchange.createMarketBuyOrder(symbol, tradeVolume)
+      if(env === 'production') {
+        // let result = await exchange.createMarketBuyOrder(symbol, tradeVolume)
+        // console.log(result)
+      }
       // 注文が確定成功したら買い注文フラグを立てる
-      // if(!result.id) return
       tradeStatus.side = 'BUY'
       tradeStatus.volume = tradeVolume
       tradeStatus.price = currentPrice
@@ -120,9 +125,11 @@ import config from './config'
     // 現在価格が、単純移動平均線(期間n分)より下にある場合→買う
     if(currentAverage > currentPrice)
     {
-      // let result = await exchange.createMarketSellOrder(symbol, tradeVolume)
+      if(env === 'production') {
+        // let result = await exchange.createMarketSellOrder(symbol, tradeVolume)
+        // console.log(result)
+      }
       // 注文が確定成功したら売り注文フラグを立てる
-      // if(result.id) return
       tradeStatus.side = 'SELL'
       tradeStatus.volume = tradeVolume
       tradeStatus.price = currentPrice
@@ -137,9 +144,11 @@ import config from './config'
     // 売り注文の状態＆現在価格が、単純移動平均線(期間n分)より上→買う
     if(tradeStatus.side === 'SELL' && currentAverage < currentPrice)
     {
-      // const result = await exchange.createMarketBuyOrder('FX_BTC_JPY', tradeVolume)
+      if(env === 'production') {
+        // const result = await exchange.createMarketBuyOrder('FX_BTC_JPY', tradeVolume)
+        // console.log(result)
+      }
       // 注文が確定成功したらステータスを更新
-      // if(result.id) return
       profitLoss = getProfit('SELL', tradeStatus.price, currentPrice, tradeStatus.volume)
       initTradeStatus(currentPrice)
       console.log('買い注文完了', tradeStatus)
@@ -147,11 +156,13 @@ import config from './config'
     }
 
     // 買い注文の状態＆現在価格が、単純移動平均線(期間n分)より下→売る
-    if(tradeStatus.side === 'BUY' && currentAverage > currentPrice)
+    if(tradeStatus.side === 'BUY' && currentPrice < currentAverage )
     {
-      // const result = await exchange.createMarketSellOrder('FX_BTC_JPY', tradeVolume)
+      if(env === 'production') {
+        // const result = await exchange.createMarketSellOrder('FX_BTC_JPY', tradeVolume)
+        // console.log(result)
+      }
       // 注文が確定成功したらステータスを更新
-      // if(result.id) return
       profitLoss = getProfit('BUY', tradeStatus.price, currentPrice, tradeStatus.volume)
       initTradeStatus(currentPrice)
       console.log('売り注文完了', tradeStatus)
