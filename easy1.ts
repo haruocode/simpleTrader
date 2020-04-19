@@ -62,12 +62,12 @@ import config from './config'
     // 現在のBTCの価格(=1本前のローソク足の終値)
     let currentPrice = prices(ohlc)[(prices(ohlc).length - 1) - 1]
 
-    // 注文が無ければポジションを持ちに行く
+    // ポジションが無ければポジションを持ちに行く
     // ポジションを持っていれば、決済しに行く
     if(tradeStatus.side === 'NONE') {
       await tryOpen(currentPrice, currentAverage) // 注文
     } else {
-      await tryClose(currentPrice, currentAverage) // 決済(手仕舞い)
+      await tryClose(currentPrice, currentAverage) // 決済
     }
 
     // 途転注文
@@ -93,9 +93,9 @@ import config from './config'
    * ループ終了
    */
 
-  /*
-  ここから関数の記述
-  */
+  /**
+   * 関数定義
+   */
 
   // tradeInfoの初期化
   function initTradeStatus(price: number): void {
@@ -205,7 +205,7 @@ import config from './config'
       setTimeout(() => {
         resolve();
       }, time);
-  });
-}
+    })
+  }
 
 })()
