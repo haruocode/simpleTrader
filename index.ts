@@ -209,19 +209,3 @@ import config from './config'
 }
 
 })()
-
-/*
-以下の関数は今回は未使用
-*/
-
-// 上昇トレンド判定
-// 移動平均線10期間前 < 5期間前 < 現在
-// function isBullMarket(): boolean {
-// 	return averageBefore20 < averageBefore7 && averageBefore7 < currentAverage
-// }
-
-// 下降トレンド判定
-// 移動平均線20期間前 > 7期間前 > 現在
-// function isBearMarket(): boolean {
-// 	return sma(-20, period) > sma(-7, period) && sma(-7, period) > sma(0, period)
-// }
