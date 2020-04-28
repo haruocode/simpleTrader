@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "type": "node",
+          "request": "launch",
+          "name": "Launch JavaScript @index.js",
+          "program": "${workspaceFolder}\\index.js",
+          "outFiles": [
+              "${workspaceFolder}/**/*.js"
+          ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch TypeScript",
+        "preLaunchTask": "Compile TypeScript",
+        "cwd": "${workspaceFolder}",
+        "program": "${file}",
+        "outFiles": [
+            "${workspaceFolder}/dist/*.js"
+        ]
+      }
+  ]
+}
