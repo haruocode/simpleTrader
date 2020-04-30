@@ -77,13 +77,13 @@ import config from './config'
 
     // 5分に1回
     // 現在価格とSMAを表示
-    if(counter >= 6){
+    if(counter >= 10){
       console.log(currentPrice, currentAverage)
       counter = 0
     }
 
-    // 10秒待機
-    await sleep(10 * 1000)
+    // 30秒待機
+    await sleep(30 * 1000)
 
     // カウントアップ
     counter++
