@@ -1,6 +1,7 @@
 import ccxt from 'ccxt'
 import axios from 'axios'
 import config from './config'
+import moment from 'moment'
 
 (async () => {
 
@@ -75,9 +76,9 @@ import config from './config'
       await tryOpen(currentPrice, currentAverage) // 注文
     }
 
-    // 10分に1回(10秒 × 60回 = 600秒 = 10分)
+    // 5分に1回(10秒 × 30回 = 300秒 = 5分)
     // 現在価格とSMAを表示
-    if(counter >= 60){
+    if(counter >= 30){
       console.log(currentPrice, currentAverage)
       counter = 0
     }
@@ -120,7 +121,7 @@ import config from './config'
         tradeStatus.side = 'BUY'
         tradeStatus.volume = tradeVolume
         tradeStatus.price = currentPrice
-        console.log('買い注文完了', tradeStatus)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '買い注文完了', tradeStatus)
       } catch(e) {
         console.log(e)
       }
@@ -138,7 +139,7 @@ import config from './config'
         tradeStatus.side = 'SELL'
         tradeStatus.volume = tradeVolume
         tradeStatus.price = currentPrice
-        console.log('売り注文完了', tradeStatus)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '売り注文完了', tradeStatus)
       } catch(e) {
         console.log(e)
       }
@@ -160,8 +161,8 @@ import config from './config'
         // 注文が確定成功したらステータスを更新
         profitLoss = getProfit('SELL', tradeStatus.price, currentPrice, tradeStatus.volume)
         initTradeStatus(currentPrice)
-        console.log('買い注文完了', tradeStatus)
-        console.log('損益', profitLoss)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '買い注文完了', tradeStatus)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '損益', profitLoss)
       } catch(e) {
         console.log(e)
       }
@@ -178,8 +179,8 @@ import config from './config'
         // 注文が確定成功したらステータスを更新
         profitLoss = getProfit('BUY', tradeStatus.price, currentPrice, tradeStatus.volume)
         initTradeStatus(currentPrice)
-        console.log('売り注文完了', tradeStatus)
-        console.log('損益', profitLoss)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '売り注文完了', tradeStatus)
+        console.log(moment().format("YYYY-MM-DD HH:mm:ss"), '損益', profitLoss)
       } catch(e) {
         console.log(e)
       }

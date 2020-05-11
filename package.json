@@ -18,6 +18,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "ccxt": "^1.25.31",
+    "moment": "^2.25.3",
     "timer": "^1.0.1"
   }
 }
