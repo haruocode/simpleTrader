@@ -75,15 +75,15 @@ import config from './config'
       await tryOpen(currentPrice, currentAverage) // 注文
     }
 
-    // 5分に1回
+    // 10分に1回(10秒 × 60回 = 600秒 = 10分)
     // 現在価格とSMAを表示
-    if(counter >= 10){
+    if(counter >= 60){
       console.log(currentPrice, currentAverage)
       counter = 0
     }
 
-    // 30秒待機
-    await sleep(30 * 1000)
+    // 10秒待機
+    await sleep(10 * 1000)
 
     // カウントアップ
     counter++
@@ -111,29 +111,37 @@ import config from './config'
     // 現在価格が、単純移動平均線(SMA)より上にある場合→買う
     if(currentAverage < currentPrice)
     {
-      if(env === 'production') {
-        // let result = await exchange.createMarketBuyOrder(symbol, tradeVolume)
-        // console.log(result)
+      try {
+        if(env === 'production') {
+          // let result = await exchange.createMarketBuyOrder(symbol, tradeVolume)
+          // console.log(result)
+        }
+        // 注文が確定成功したら買い注文フラグを立てる
+        tradeStatus.side = 'BUY'
+        tradeStatus.volume = tradeVolume
+        tradeStatus.price = currentPrice
+        console.log('買い注文完了', tradeStatus)
+      } catch(e) {
+        console.log(e)
       }
-      // 注文が確定成功したら買い注文フラグを立てる
-      tradeStatus.side = 'BUY'
-      tradeStatus.volume = tradeVolume
-      tradeStatus.price = currentPrice
-      console.log('買い注文完了', tradeStatus)
     }
 
     // 現在価格が、単純移動平均線(期間n分)より下にある場合→売る
     if(currentAverage > currentPrice)
     {
-      if(env === 'production') {
-        // let result = await exchange.createMarketSellOrder(symbol, tradeVolume)
-        // console.log(result)
+      try {
+        if(env === 'production') {
+          // let result = await exchange.createMarketSellOrder(symbol, tradeVolume)
+          // console.log(result)
+        }
+        // 注文が確定成功したら売り注文フラグを立てる
+        tradeStatus.side = 'SELL'
+        tradeStatus.volume = tradeVolume
+        tradeStatus.price = currentPrice
+        console.log('売り注文完了', tradeStatus)
+      } catch(e) {
+        console.log(e)
       }
-      // 注文が確定成功したら売り注文フラグを立てる
-      tradeStatus.side = 'SELL'
-      tradeStatus.volume = tradeVolume
-      tradeStatus.price = currentPrice
-      console.log('売り注文完了', tradeStatus)
     }
   }
 
@@ -144,29 +152,37 @@ import config from './config'
     // 売り注文の状態＆現在価格が、単純移動平均線(期間n分)より上→買う
     if(tradeStatus.side === 'SELL' && currentAverage < currentPrice)
     {
-      if(env === 'production') {
-        // const result = await exchange.createMarketBuyOrder('FX_BTC_JPY', tradeVolume)
-        // console.log(result)
+      try {
+        if(env === 'production') {
+          // const result = await exchange.createMarketBuyOrder('FX_BTC_JPY', tradeVolume)
+          // console.log(result)
+        }
+        // 注文が確定成功したらステータスを更新
+        profitLoss = getProfit('SELL', tradeStatus.price, currentPrice, tradeStatus.volume)
+        initTradeStatus(currentPrice)
+        console.log('買い注文完了', tradeStatus)
+        console.log('損益', profitLoss)
+      } catch(e) {
+        console.log(e)
       }
-      // 注文が確定成功したらステータスを更新
-      profitLoss = getProfit('SELL', tradeStatus.price, currentPrice, tradeStatus.volume)
-      initTradeStatus(currentPrice)
-      console.log('買い注文完了', tradeStatus)
-      console.log('損益', profitLoss)
     }
 
     // 買い注文の状態＆現在価格が、単純移動平均線(期間n分)より下→売る
     if(tradeStatus.side === 'BUY' && currentPrice < currentAverage )
     {
-      if(env === 'production') {
-        // const result = await exchange.createMarketSellOrder('FX_BTC_JPY', tradeVolume)
-        // console.log(result)
+      try {
+        if(env === 'production') {
+          // const result = await exchange.createMarketSellOrder('FX_BTC_JPY', tradeVolume)
+          // console.log(result)
+        }
+        // 注文が確定成功したらステータスを更新
+        profitLoss = getProfit('BUY', tradeStatus.price, currentPrice, tradeStatus.volume)
+        initTradeStatus(currentPrice)
+        console.log('売り注文完了', tradeStatus)
+        console.log('損益', profitLoss)
+      } catch(e) {
+        console.log(e)
       }
-      // 注文が確定成功したらステータスを更新
-      profitLoss = getProfit('BUY', tradeStatus.price, currentPrice, tradeStatus.volume)
-      initTradeStatus(currentPrice)
-      console.log('売り注文完了', tradeStatus)
-      console.log('損益', profitLoss)
     }
   }
 
