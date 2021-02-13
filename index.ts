@@ -218,7 +218,7 @@ import moment from 'moment'
   }
 
   function sleep(time: number) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
         resolve();
       }, time);
